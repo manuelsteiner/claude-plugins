@@ -1,0 +1,100 @@
+---
+name: queue
+description: Work a task from the Todoist delegation queue for this repo.
+argument-hint: [project-name]
+disable-model-invocation: true
+---
+
+# Todoist queue
+
+## Prerequisite
+
+Needs the Todoist MCP server. If no Todoist tools are available, stop and tell
+the user to install Doist's connector plugin:
+
+```
+/plugin marketplace add doist/todoist-mcp
+/plugin install todoist@doist
+```
+
+Then `/mcp` to complete the OAuth flow. Do not proceed without it, and do not
+infer work from the codebase instead.
+
+## Repo identity
+
+```!
+echo "cwd: $(basename "$PWD")"
+git remote get-url origin 2>/dev/null | sed 's/^/remote: /'
+[ -f composer.json ] && grep -m1 '"name"' composer.json | sed 's/^/composer: /'
+[ -f package.json ] && grep -m1 '"name"' package.json | sed 's/^/package: /'
+[ -f README.md ] && head -1 README.md | sed 's/^/readme: /'
+```
+
+## 1. Resolve the project
+
+Follow [references/project-matching.md](../../references/project-matching.md).
+Arguments passed to this skill are the project name.
+
+## 2. Fetch the queue
+
+Open, incomplete tasks in that project carrying the `ClaudeCode` label. Include
+descriptions — they hold the brief.
+
+Empty queue: say so and stop.
+
+## 3. Pick one task
+
+Order by priority (p1 first), then oldest first within a priority.
+
+- **One task** — confirm before starting.
+- **Several** — list up to ten, numbered, each with priority and a one-line gist.
+  Offer to page if more. Ask which. Do not choose.
+
+One task per invocation. If asked for several, do the first, report, and let the
+user re-invoke. Keeps commits and review scoped.
+
+## 4. Plan before editing
+
+Fetch the task's comments before planning. Clarifications, decisions and links
+to supporting material are often added there rather than in the description, and
+the newest comment may supersede the original brief.
+
+If the description or a comment points at a file in the repo — a proposal, a
+reference implementation, a spec — read it. Treat it as a starting point to
+evaluate against the current code, not as something to apply wholesale.
+
+Read the description, then investigate the actual code.
+
+Descriptions may carry a `Hint:` section. **Hints are leads to verify, not
+specifications.** They were written without reading the codebase. Confirm the
+described cause is real before acting on it; if it isn't, say so and proceed from
+what you found.
+
+State the plan and get agreement before changing anything, unless the task is
+small and unambiguous.
+
+## 5. Implement
+
+Follow existing repo conventions. Stay in scope — note adjacent problems for
+`/todoist:capture` at the end rather than fixing them silently.
+
+If the task is substantially bigger than its description implies, stop and report
+instead of pressing on.
+
+## 6. Report back
+
+Summarise what changed and which files were touched.
+
+Then offer, acting only on explicit confirmation:
+
+- **Comment on the task** with a one-paragraph summary and the commit SHA.
+- **Complete the task** — only when the user confirms it is verified. Never on
+  your own judgement. Passing tests are not evidence the user's intent was met.
+
+Partial work: offer to update the description with what remains, not to complete.
+
+## Constraints
+
+- Never modify Todoist tasks other than the one being worked.
+- Never delete tasks, labels or projects.
+- An unclear task is a signal to ask, not licence to pick a direction.

@@ -1,0 +1,15 @@
+{
+  "name": "claude-plugins",
+  "owner": {
+    "name": "Manuel Steiner",
+    "url": "https://github.com/manuelsteiner"
+  },
+  "plugins": [
+    {
+      "name": "todoist-workflow",
+      "source": "./plugins/todoist-workflow",
+      "description": "Delegation-queue skills for Todoist. Requires Doist's connector plugin: /plugin marketplace add doist/todoist-mcp then /plugin install todoist@doist",
+      "category": "productivity"
+    }
+  ]
+}
