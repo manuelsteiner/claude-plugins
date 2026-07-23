@@ -51,8 +51,9 @@ Empty queue: say so and stop.
 Order by priority (p1 first), then oldest first within a priority.
 
 - **One task** — confirm before starting.
-- **Several** — list up to ten, numbered, each with priority and a one-line gist.
-  Offer to page if more. Ask which. Do not choose.
+- **Several** — present up to ten via the `AskUserQuestion` tool, each option
+  labelled with priority and a one-line gist. Offer to page if more. Do not
+  choose.
 
 One task per invocation. If asked for several, do the first, report, and let the
 user re-invoke. Keeps commits and review scoped.
@@ -89,7 +90,8 @@ instead of pressing on.
 
 Summarise what changed and which files were touched.
 
-Then offer, acting only on explicit confirmation:
+Then offer next steps via the `AskUserQuestion` tool (multi-select), acting only
+on explicit confirmation:
 
 - **Comment on the task** with a one-paragraph summary and the commit SHA.
 - **Complete the task** — only when the user confirms it is verified. Never on

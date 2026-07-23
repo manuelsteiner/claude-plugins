@@ -26,10 +26,11 @@ ask the user which project to use.
 ## Outcomes
 
 - **One corroborated match** — use it, and state which project was chosen.
-- **Several candidates, or a fuzzy match only** — list them and ask. Never pick
-  silently.
-- **Nothing plausible** — say so, show the project list, and ask which to use or
-  whether to create one. Do not proceed on codebase inspection alone.
+- **Several candidates, or a fuzzy match only** — present them via the
+  `AskUserQuestion` tool and ask. Never pick silently.
+- **Nothing plausible** — say so, and present the project list via
+  `AskUserQuestion` (including an option to create one). Do not proceed on
+  codebase inspection alone.
 
 Always name the resolved project in the response so a wrong match is visible
 immediately rather than after the write.
