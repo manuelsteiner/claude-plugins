@@ -3,6 +3,7 @@ name: capture
 description: Turn things noticed during this session into Todoist tasks for this repo.
 argument-hint: [thing to capture]
 disable-model-invocation: true
+allowed-tools: Bash(pwd), Bash(git remote get-url origin), Bash(git rev-parse --short HEAD), Bash(grep:*)
 ---
 
 # Todoist capture
@@ -22,13 +23,14 @@ report what would have been created so the user can retry after installing.
 
 ## Repo identity
 
-```!
-echo "cwd: $(basename "$PWD")"
-git remote get-url origin 2>/dev/null | sed 's/^/remote: /'
-git rev-parse --short HEAD 2>/dev/null | sed 's/^/commit: /'
-[ -f composer.json ] && grep -m1 '"name"' composer.json | sed 's/^/composer: /'
-[ -f package.json ] && grep -m1 '"name"' package.json | sed 's/^/package: /'
-```
+**Directory:** !`pwd`
+**Git remote:** !`git remote get-url origin`
+**Commit:** !`git rev-parse --short HEAD`
+**composer.json name:** !`grep -m1 '"name"' composer.json`
+**package.json name:** !`grep -m1 '"name"' package.json`
+
+Any line above may error if the file or remote doesn't exist — that's expected,
+just treat it as absent.
 
 ## 1. Resolve the project
 

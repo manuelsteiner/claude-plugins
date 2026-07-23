@@ -3,6 +3,7 @@ name: queue
 description: Work a task from the Todoist delegation queue for this repo.
 argument-hint: [project-name]
 disable-model-invocation: true
+allowed-tools: Bash(pwd), Bash(git remote get-url origin), Bash(grep:*), Bash(head:*)
 ---
 
 # Todoist queue
@@ -22,13 +23,14 @@ infer work from the codebase instead.
 
 ## Repo identity
 
-```!
-echo "cwd: $(basename "$PWD")"
-git remote get-url origin 2>/dev/null | sed 's/^/remote: /'
-[ -f composer.json ] && grep -m1 '"name"' composer.json | sed 's/^/composer: /'
-[ -f package.json ] && grep -m1 '"name"' package.json | sed 's/^/package: /'
-[ -f README.md ] && head -1 README.md | sed 's/^/readme: /'
-```
+**Directory:** !`pwd`
+**Git remote:** !`git remote get-url origin`
+**composer.json name:** !`grep -m1 '"name"' composer.json`
+**package.json name:** !`grep -m1 '"name"' package.json`
+**README heading:** !`head -1 README.md`
+
+Any line above may error if the file or remote doesn't exist — that's expected,
+just treat it as absent.
 
 ## 1. Resolve the project
 
