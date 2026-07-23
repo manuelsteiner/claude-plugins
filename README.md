@@ -6,7 +6,7 @@ Personal Claude Code plugin marketplace.
 
 ```
 /plugin marketplace add manuelsteiner/claude-plugins
-/plugin install todoist-workflow@claude-plugins
+/plugin install todoist-workflow@manuelsteiner-claude-plugins
 ```
 
 `todoist-workflow` needs the Todoist connector, which is maintained by Doist:
