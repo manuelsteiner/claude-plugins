@@ -24,13 +24,16 @@ report what would have been created so the user can retry after installing.
 ## Repo identity
 
 **Directory:** !`pwd`
-**Git remote:** !`git remote get-url origin`
-**Commit:** !`git rev-parse --short HEAD`
-**composer.json name:** !`grep -m1 '"name"' composer.json`
-**package.json name:** !`grep -m1 '"name"' package.json`
 
-Any line above may error if the file or remote doesn't exist — that's expected,
-just treat it as absent.
+Before resolving the project, also check for a git remote, the current commit,
+and a repo manifest — you'll need the commit SHA later for descriptions. Each
+of these is commonly absent — a failed command or missing file means that
+signal is unavailable, not an error condition. Don't stop or report a problem
+over it:
+
+- `git remote get-url origin`
+- `git rev-parse --short HEAD`
+- `composer.json` / `package.json` — the `name` field, if the file exists
 
 ## 1. Resolve the project
 

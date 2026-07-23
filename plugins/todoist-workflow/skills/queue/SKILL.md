@@ -24,13 +24,15 @@ infer work from the codebase instead.
 ## Repo identity
 
 **Directory:** !`pwd`
-**Git remote:** !`git remote get-url origin`
-**composer.json name:** !`grep -m1 '"name"' composer.json`
-**package.json name:** !`grep -m1 '"name"' package.json`
-**README heading:** !`head -1 README.md`
 
-Any line above may error if the file or remote doesn't exist — that's expected,
-just treat it as absent.
+Before resolving the project, also check for a git remote and repo manifest.
+Each of these is commonly absent — a failed command or missing file means
+that signal is unavailable, not an error condition. Don't stop or report a
+problem over it:
+
+- `git remote get-url origin`
+- `composer.json` / `package.json` — the `name` field, if the file exists
+- `README.md` — the first heading, if the file exists
 
 ## 1. Resolve the project
 

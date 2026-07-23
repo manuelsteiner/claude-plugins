@@ -4,11 +4,13 @@ Used by both `queue` and `capture`. Keep the behaviour identical in both.
 
 ## Inputs
 
-The invoking skill supplies repo identity gathered from the working directory:
-directory name, git remote, `composer.json` / `package.json` name, README heading.
+The invoking skill's directory is pre-supplied. Gather the rest yourself: git
+remote, `composer.json` / `package.json` name, README heading. Missing files
+and failed commands just mean that signal is unavailable — expected, not an
+error.
 
-If that block arrives as a literal placeholder rather than data, shell execution
-is disabled by policy. Do not guess — ask the user which project to use.
+If gathering this isn't possible at all (e.g. Bash is denied), do not guess —
+ask the user which project to use.
 
 ## Rules
 
